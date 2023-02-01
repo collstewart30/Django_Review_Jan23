@@ -9,7 +9,15 @@ from django.shortcuts import get_object_or_404
 def cars_list(request):
 
     if request.method == 'GET':
+
+        dealership_name = request.query_params.get("dealership")    # name of key used in url parameter
+        print(dealership_name)
+        
         cars = Car.objects.all()
+
+        if dealership_name:
+            cars=cars.filter(dealership__name=dealership_name)
+
         serializer = CarSerialzer(cars, many=True)
         # print(serializer.data)
         return Response(serializer.data)
